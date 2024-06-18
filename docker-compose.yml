@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  wordpress1:
+    image: wordpress:latest
+    container_name: wordpress1
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      WORDPRESS_DB_HOST: db1
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb1
+    volumes:
+      - ./site1:/var/www/html
+
+  wordpress2:
+    image: wordpress:latest
+    container_name: wordpress2
+    restart: always
+    ports:
+      - "8082:80"
+    environment:
+      WORDPRESS_DB_HOST: db2
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb2
+    volumes:
+      - ./site2:/var/www/html
+
+  db1:
+    image: mysql:5.7
+    container_name: db1
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somerootpassword
+      MYSQL_DATABASE: exampledb1
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+    volumes:
+      - db_data1:/var/lib/mysql
+
+  db2:
+    image: mysql:5.7
+    container_name: db2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somerootpassword
+      MYSQL_DATABASE: exampledb2
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+    volumes:
+      - db_data2:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_ARBITRARY: 1
+      MYSQL_ROOT_PASSWORD: somerootpassword
+
+volumes:
+  db_data1:
+  db_data2:
